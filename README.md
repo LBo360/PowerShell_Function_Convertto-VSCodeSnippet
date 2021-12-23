@@ -1,4 +1,4 @@
-# Convertto-VSCodeSnippet
+# ConvertTo-VSCodeSnippet
 PowerShell function for converting ISE Snippets into VSCode snippets
 ## EXAMPLE
    ```powershell
