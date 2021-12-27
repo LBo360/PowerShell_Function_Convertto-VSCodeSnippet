@@ -1,4 +1,4 @@
-﻿<#
+<#
 .Synopsis
    Convert ISE Snippets into VSCode Snippets
 .DESCRIPTION
@@ -77,10 +77,11 @@ File > Preferences > User Snippets, type "PowerShell" and press "Enter"
     }
     Process
     {
-       
+      $Count = 0
       $snippetColl = $psISE.CurrentPowerShellTab.Snippets.Where({$_.DisplayTitle -in $snippet})
       foreach($target in $snippetColl)
         {
+          $count++
           # Get code from Snippet, escaping '$'
           $body = ConvertTo-Json $(($target.codefragment).replace('$','$$')) 
           $description = ConvertTo-Json $target.description
@@ -91,16 +92,20 @@ File > Preferences > User Snippets, type "PowerShell" and press "Enter"
 `t"description": $description
 `t},
 "@
-          return $hereString
+          $hereStringColl = @"
+$hereStringColl
+$hereString
+"@
         }
 
     }
     End
     {
+      $hereStringColl = $hereStringColl.TrimEnd(',')
       if($ExportToJSON)
         {
           $currentFile = $currentFile.TrimEnd("\}")
-          $newfile = $currentFile + $hereString + "`r}"
+          $newfile = $currentFile + $hereStringColl + "`r}"
           Set-Content -Path "$VSCodeSnippetPath\PowerShell.json" -Value ([byte[]][char[]]"$newfile") -Encoding Byte
         }
     }
