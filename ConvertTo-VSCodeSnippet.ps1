@@ -77,11 +77,9 @@ File > Preferences > User Snippets, type "PowerShell" and press "Enter"
     }
     Process
     {
-      $Count = 0
       $snippetColl = $psISE.CurrentPowerShellTab.Snippets.Where({$_.DisplayTitle -in $snippet})
       foreach($target in $snippetColl)
         {
-          $count++
           # Get code from Snippet, escaping '$'
           $body = ConvertTo-Json $(($target.codefragment).replace('$','$$')) 
           $description = ConvertTo-Json $target.description
@@ -97,11 +95,11 @@ $hereStringColl
 $hereString
 "@
         }
-
     }
     End
     {
       $hereStringColl = $hereStringColl.TrimEnd(',')
+      $hereStringColl
       if($ExportToJSON)
         {
           $currentFile = $currentFile.TrimEnd("\}")
